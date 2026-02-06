@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://example.com/soap/user"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             targetNamespace="http://example.com/soap/user"
+             elementFormDefault="qualified">
+
+    <!-- Types -->
+    <types>
+        <xsd:schema targetNamespace="http://example.com/soap/user">
+            <!-- GetUser Request -->
+            <xsd:element name="GetUserRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- GetUser Response -->
+            <xsd:element name="GetUserResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:string"/>
+                        <xsd:element name="name" type="xsd:string"/>
+                        <xsd:element name="email" type="xsd:string"/>
+                        <xsd:element name="createdAt" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- UploadFile Request -->
+            <xsd:element name="UploadFileRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="fileName" type="xsd:string"/>
+                        <xsd:element name="fileData" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- UploadFile Response -->
+            <xsd:element name="UploadFileResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="fileId" type="xsd:string"/>
+                        <xsd:element name="fileName" type="xsd:string"/>
+                        <xsd:element name="size" type="xsd:long"/>
+                        <xsd:element name="path" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- UploadFileMTOM Request -->
+            <xsd:element name="UploadFileMTOMRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="fileName" type="xsd:string"/>
+                        <xsd:element name="fileData" type="xsd:base64Binary"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- UploadFileMTOM Response -->
+            <xsd:element name="UploadFileMTOMResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="fileId" type="xsd:string"/>
+                        <xsd:element name="fileName" type="xsd:string"/>
+                        <xsd:element name="size" type="xsd:long"/>
+                        <xsd:element name="path" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+
+    <!-- Messages -->
+    <message name="GetUserRequest">
+        <part name="parameters" element="tns:GetUserRequest"/>
+    </message>
+
+    <message name="GetUserResponse">
+        <part name="parameters" element="tns:GetUserResponse"/>
+    </message>
+
+    <message name="UploadFileRequest">
+        <part name="parameters" element="tns:UploadFileRequest"/>
+    </message>
+
+    <message name="UploadFileResponse">
+        <part name="parameters" element="tns:UploadFileResponse"/>
+    </message>
+
+    <message name="UploadFileMTOMRequest">
+        <part name="parameters" element="tns:UploadFileMTOMRequest"/>
+    </message>
+
+    <message name="UploadFileMTOMResponse">
+        <part name="parameters" element="tns:UploadFileMTOMResponse"/>
+    </message>
+
+    <!-- Port Type -->
+    <portType name="UserServicePortType">
+        <operation name="GetUser">
+            <input message="tns:GetUserRequest"/>
+            <output message="tns:GetUserResponse"/>
+        </operation>
+        <operation name="UploadFile">
+            <input message="tns:UploadFileRequest"/>
+            <output message="tns:UploadFileResponse"/>
+        </operation>
+        <operation name="UploadFileMTOM">
+            <input message="tns:UploadFileMTOMRequest"/>
+            <output message="tns:UploadFileMTOMResponse"/>
+        </operation>
+    </portType>
+
+    <!-- Binding -->
+    <binding name="UserServiceSoapBinding" type="tns:UserServicePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="GetUser">
+            <soap:operation soapAction="http://example.com/soap/user/GetUser"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="UploadFile">
+            <soap:operation soapAction="http://example.com/soap/user/UploadFile"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="UploadFileMTOM">
+            <soap:operation soapAction="http://example.com/soap/user/UploadFileMTOM"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <!-- Service -->
+    <service name="UserService">
+        <port name="UserServicePort" binding="tns:UserServiceSoapBinding">
+            <soap:address location="http://localhost:8080/soap"/>
+        </port>
+    </service>
+</definitions>
